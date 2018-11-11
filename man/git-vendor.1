@@ -1,13 +1,13 @@
 .\" generated with Ronn/v0.7.3
 .\" http://github.com/rtomayko/ronn/tree/0.7.3
 .
-.TH "GIT\-VENDOR" "1" "February 2016" "" "Git Vendor"
+.TH "GIT\-VENDOR" "1" "November 2018" "" "Git Vendor"
 .
 .SH "NAME"
 \fBgit\-vendor\fR \- manage vendored dependency subtrees
 .
 .SH "SYNOPSIS"
-\fBgit\-vendor add [\-\-prefix <dir>] <name> <repository> [<ref>]\fR
+\fBgit\-vendor add [\-\-squash] [\-\-prefix <dir>] <name> <repository> [<ref>]\fR
 .
 .P
 \fBgit\-vendor list [<name>]\fR
@@ -16,7 +16,7 @@
 \fBgit\-vendor remove <name>\fR
 .
 .P
-\fBgit\-vendor update <name> [<ref>]\fR
+\fBgit\-vendor update [\-\-squash] <name> [<ref>]\fR
 .
 .SH "DESCRIPTION"
 Manage any repository dependencies with \fBgit\-subtree\fR\.
@@ -28,7 +28,7 @@ Manage any repository dependencies with \fBgit\-subtree\fR\.
 \fBgit\-vendor\fR is unable to \fBlist\fR or \fBupdate\fR any dependencies it has not added, the reason is that \fBgit\-vendor\fR adds special commit messages so that it can track existing dependencies\.
 .
 .SH "COMMANDS"
-add [\-\-prefix <dir>] <name> <repository> [<ref>]
+add [\-\-squash] [\-\-prefix <dir>] <name> <repository> [<ref>]
 .
 .P
 Add a new vendored dependency
@@ -46,12 +46,18 @@ remove <name>
 Remove the named vendored dependency\.
 .
 .P
-update <dir> <ref>
+update [\-\-squash] <dir> <ref>
 .
 .P
 Update the vendored dependency to a different version\.
 .
 .SH "OPTIONS"
+\-\-squash
+.
+.P
+Vendored dependency is squashed on add/update\. By default the whole history is kept\.
+.
+.P
 \-\-prefix <dir>
 .
 .P

@@ -15,9 +15,9 @@ See https://brettlangdon.github.io/git-vendor for the current MAN page documenta
 
 `git-vendor` provides the following commands:
 
-* `git vendor add [--prefix <dir>] <name> <repository> [<ref>]` - add a new vendored dependency.
+* `git vendor add [--squash] [--prefix <dir>] <name> <repository> [<ref>]` - add a new vendored dependency.
 * `git vendor list [<name>]` - list current vendored dependencies, their source, and current vendored ref.
-* `git vendor update <name> [<ref>]` - update a vendored dependency.
+* `git vendor update [--squash] <name> [<ref>]` - update a vendored dependency.
 
 ## Installation
 Manually:
@@ -49,6 +49,7 @@ git-vendor-name: forge
 git-vendor-dir: vendor/github.com/brettlangdon/forge
 git-vendor-repository: https://github.com/brettlangdon/forge
 git-vendor-ref: v0.1.6
+git-vendor-squahed: false
 ' https://github.com/brettlangdon/forge v0.1.6 --squash
 git fetch https://github.com/brettlangdon/forge v0.1.6
 warning: no common commits
@@ -63,11 +64,12 @@ Added dir 'vendor/github.com/brettlangdon/forge'
 $ # List current vendored dependencies
 $ git vendor list
 forge@v0.1.6:
-	name:	forge
-	dir:	vendor/github.com/brettlangdon/forge
-	repo:	https://github.com/brettlangdon/forge
-	ref:	v0.1.6
-	commit:	3335840c5f0ad9e821006588f1b16a3385d9c318
+	name:		forge
+	dir:		vendor/github.com/brettlangdon/forge
+	repo:		https://github.com/brettlangdon/forge
+	ref:		v0.1.6
+	commit:		3335840c5f0ad9e821006588f1b16a3385d9c318
+	squashed:	false
 
 $ # Update existing dependency to a newer version
 $ git vendor update forge v0.1.7
@@ -82,10 +84,11 @@ Merge made by the 'recursive' strategy.
 $ # List current vendored dependencies
 $ git vendor list
 forge@v0.1.7:
-	name:	forge
-	dir:	vendor/github.com/brettlangdon/forge
-	repo:	https://github.com/brettlangdon/forge
-	ref:	v0.1.7
-	commit:	071c5f108e0af39bf67a87fc766ea9bfb72b9ee7
+	name:		forge
+	dir:		vendor/github.com/brettlangdon/forge
+	repo:		https://github.com/brettlangdon/forge
+	ref:		v0.1.7
+	commit:		071c5f108e0af39bf67a87fc766ea9bfb72b9ee7
+	squashed:	false
 
 ```
