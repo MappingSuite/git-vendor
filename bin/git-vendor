@@ -9,10 +9,10 @@ _usage()
     cat <<EOF
 Usage:
   git vendor --help
-  git vendor add [--prefix <dir>] <name> <repository> [<ref>]
+  git vendor add [--squash] [--prefix <dir>] <name> <repository> [<ref>]
   git vendor list [<name>]
   git vendor remove <name>
-  git vendor update <name> [<ref>]
+  git vendor update [--squash] <name> [<ref>]
 EOF
 }
 
@@ -31,11 +31,24 @@ case "$command" in
     *) >&2 echo "error: unknown command \"$command\"" && _usage && exit 1 ;;
 esac
 
+squash_mode=false
+if [ "$1" = "--squash" ]; then
+    squash_mode=true
+    shift
+fi
+
 prefix="vendor"
 if [ "$1" = "--prefix" ]; then
     prefix="$2"
     shift; shift
 fi
+
+_get_squash_mode()
+{
+    if ${squash_mode}; then
+        echo -n "--squash"
+    fi
+}
 
 vendor_names_from_log()
 {
@@ -88,9 +101,10 @@ git-vendor-name: $name
 git-vendor-dir: $dir
 git-vendor-repository: $repository
 git-vendor-ref: $ref
+git-vendor-squashed: $squash_mode
 "
     set -x
-    git subtree add --prefix "$dir" --message "$message" "$repository" "$ref" --squash
+    git subtree add --prefix "$dir" --message "$message" "$repository" "$ref" $(_get_squash_mode)
 }
 
 cmd_list()
@@ -105,17 +119,19 @@ cmd_list()
                     git-vendor-name:) name="$b" ;;
                     git-vendor-dir:) dir="$b" ;;
                     git-vendor-ref:) ref="$b" ;;
-		    git-vendor-repository:) repository="$b" ;;
+		            git-vendor-repository:) repository="$b" ;;
+                    git-vendor-squashed:) squashed="$b" ;;
 		    END)
                         if [ ! -z "$repository" ];
                         then
                             if [ -z "$showOnly" -o "$showOnly" = "$name" ]; then
                                 printf "$name@$ref:\n"
-                                printf "\tname:\t$name\n"
-                                printf "\tdir:\t$dir\n"
-                                printf "\trepo:\t$repository\n"
-                                printf "\tref:\t$ref\n"
-                                printf "\tcommit:\t$commit\n"
+                                printf "\tname:\t\t$name\n"
+                                printf "\tdir:\t\t$dir\n"
+                                printf "\trepo:\t\t$repository\n"
+                                printf "\tref:\t\t$ref\n"
+                                printf "\tcommit:\t\t$commit\n"
+                                printf "\tsquashed:\t$squashed"
                                 printf "\n"
                             fi
                         fi
@@ -124,6 +140,7 @@ cmd_list()
                         ref=
                         commit=
                         repository=
+                        squashed=
                         ;;
 	        esac
 	    done
@@ -163,8 +180,9 @@ git-vendor-name: $name
 git-vendor-dir: $dir
 git-vendor-repository: $repository
 git-vendor-ref: $ref
+git-vendor-squashed: $squash_mode
 "
-                        git subtree pull --prefix "$dir" --message "$message" "$repository" "$ref" --squash
+                        git subtree pull --prefix "$dir" --message "$message" "$repository" "$ref" $(_get_squash_mode)
                         break
                     fi
                     ;;

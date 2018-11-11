@@ -3,13 +3,13 @@ git-vendor(1) -- manage vendored dependency subtrees
 
 ## SYNOPSIS
 
-`git-vendor add [--prefix <dir>] <name> <repository> [<ref>]`
+`git-vendor add [--squash] [--prefix <dir>] <name> <repository> [<ref>]`
 
 `git-vendor list [<name>]`
 
 `git-vendor remove <name>`
 
-`git-vendor update <name> [<ref>]`
+`git-vendor update [--squash] <name> [<ref>]`
 
 ## DESCRIPTION
 
@@ -21,7 +21,7 @@ git-vendor(1) -- manage vendored dependency subtrees
 
 ## COMMANDS
 
-  add [--prefix &lt;dir&gt;] &lt;name&gt; &lt;repository&gt; [&lt;ref&gt;]
+  add [--squash] [--prefix &lt;dir&gt;] &lt;name&gt; &lt;repository&gt; [&lt;ref&gt;]
 
   Add a new vendored dependency
 
@@ -33,12 +33,15 @@ git-vendor(1) -- manage vendored dependency subtrees
 
   Remove the named vendored dependency.
 
-  update &lt;dir&gt; &lt;ref&gt;
+  update [--squash] &lt;dir&gt; &lt;ref&gt;
 
   Update the vendored dependency to a different version.
 
 
 ## OPTIONS
+  --squash
+
+  Vendored dependency is squashed on add/update. By default the whole history is kept.
 
   --prefix &lt;dir&gt;
 
