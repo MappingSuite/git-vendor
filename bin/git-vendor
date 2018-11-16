@@ -93,7 +93,13 @@ cmd_add()
         die "Incorrect options provided: git vendor add <name> <repository> [<ref>]"
     fi
 
-    dir="$prefix/$(echo "$repository" | sed -E 's/^[a-zA-Z]+((:\/\/)|@)//' | sed 's/:/\//' | sed -E 's/\.git$//')"
+    if [ "." = "${prefix}" ]; then
+        prefix=""
+    else
+        prefix="$prefix/"
+    fi
+
+    dir="${prefix}$(echo "$repository" | sed -E 's/^[a-zA-Z]+((:\/\/)|@)//' | sed 's/:/\//' | sed -E 's/\.git$//')"
     message="\
 Add \"$name\" from \"$repository@$ref\"
 
